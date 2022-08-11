@@ -7,6 +7,8 @@ import MsgAdapter.MsgDefine.MsgType;
 import Service.Service;
 
 import java.awt.*;
+
+import UI.UIManager.UIType;
 import UI.Utils.*;
 import java.awt.event.*;
 import java.util.Objects;
@@ -51,7 +53,10 @@ public class RegisterUI extends ToasterFrame {
         addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {
-                System.exit(0);
+                UIManager.getInstance().getCurrentUI().setVisible(false);
+                ToasterFrame ui = UIManager.getInstance().getUI(UIType.LOGIN);
+                ui.setVisible(true);
+                UIManager.getInstance().setCurrentUI(ui);
             }
         });
 
@@ -147,8 +152,8 @@ public class RegisterUI extends ToasterFrame {
             return;
         }
         MsgBuilder builder = new MsgBuilder(MsgType.REGISTER, service.getPid());
-        service.send(builder.msgPackage(ByteTransform.fillZero(username.getBytes(), UIUtils.USERNAME_MAX_LEN), 
-                                                      ByteTransform.fillZero(passWd.getBytes(), UIUtils.PASSWORD_MAX_LEN)));
+        service.send(builder.msgPackage(ByteTransform.fillZero(username.getBytes(), UIUtils.USERNAME_MAX_LEN + 1), 
+                                                      ByteTransform.fillZero(passWd.getBytes(), UIUtils.PASSWORD_MAX_LEN + 1)));
     }
 
     private void addRegisterButton(JPanel panel1) {

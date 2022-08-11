@@ -7,25 +7,17 @@ import javax.swing.*;
 import MsgAdapter.MsgBuilder;
 import MsgAdapter.MsgDefine.MsgType;
 import Service.Service;
-import UI.Toaster.Toaster;
 import UI.UIManager.UIType;
 import UI.Utils.*;
-import UI.UIManager;
 import Utils.ByteTransform;
 
 public class LoginUI extends ToasterFrame {
     TextFieldUsername usernameField = new TextFieldUsername();
     TextFieldPassword passwordField = new TextFieldPassword();
 
-    public static void main(String[] args) {
-        ToasterFrame ui = new LoginUI();
-        UIManager.getInstance().registUI(UIType.LOGIN, ui);
-        UIManager.getInstance().setCurrentUI(ui);
-    }
-
-    private LoginUI() {
+    public LoginUI() {
         super();
-        startService();
+
         addLogo(mainJPanel);
 
         addSeparator(mainJPanel);
@@ -203,8 +195,8 @@ public class LoginUI extends ToasterFrame {
     private void addRegisterButton(JPanel panel1) {
         panel1.add(new HyperlinkText(UIUtils.BUTTON_TEXT_REGISTER, 631, 300, () -> {
             this.setVisible(false);
-            ToasterFrame ui = new RegisterUI();
-            UIManager.getInstance().registUI(UIType.REGISTER, ui);
+            ToasterFrame ui = UIManager.getInstance().getUI(UIType.REGISTER);
+            ui.setVisible(true);
             UIManager.getInstance().setCurrentUI(ui);
         }));
     }
@@ -231,40 +223,5 @@ public class LoginUI extends ToasterFrame {
         MsgBuilder builder = new MsgBuilder(MsgType.LOGIN, service.getPid());
         service.send(builder.msgPackage(ByteTransform.fillZero(username.getBytes(), UIUtils.USERNAME_MAX_LEN), 
                                                       ByteTransform.fillZero(passWd.getBytes(), UIUtils.PASSWORD_MAX_LEN)));
-    }
-
-    private void startService() {
-        Thread recv = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                while (Service.getInstance() == null) {
-                    try {
-                        // 每秒重试
-                        Thread.sleep(1000);
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                }
-                Service.getInstance().recv();
-            }
-        });
-
-        Thread msgDispatch = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                while (Service.getInstance() == null) {
-                    try {
-                        // 每秒重试
-                        Thread.sleep(1000);
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                }
-                Service.getInstance().messageDispatch();
-            } 
-        });
-
-        recv.start();
-        msgDispatch.start();
     }
 }

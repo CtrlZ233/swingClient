@@ -19,9 +19,9 @@ public class UIUtils {
 
     public static final String PLACEHOLDER_TEXT_USERNAME = "Username/email";
 
-    public static final int USERNAME_MAX_LEN = 32;
+    public static final int USERNAME_MAX_LEN = 31;
     public static final int USERNAME_MIN_LEN = 1;
-    public static final int PASSWORD_MAX_LEN = 16; 
+    public static final int PASSWORD_MAX_LEN = 15; 
     public static final int PASSWORD_MIN_LEN = 6;
 
     public static final int ROUNDNESS = 8;

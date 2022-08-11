@@ -15,10 +15,6 @@ import MsgHandler.LoginRspHandler;
 import MsgHandler.MsgHandler;
 import MsgHandler.RegisterRspHandler;
 
-import UI.Utils.ToasterFrame;
-import UI.UIManager;
-
-
 public class Service {
     private static int MaxWaitMsgNum = 32;
     private static volatile Service INSTANCE = null;

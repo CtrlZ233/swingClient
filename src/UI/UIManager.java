@@ -13,11 +13,15 @@ public class UIManager {
     }
     
     private HashMap<UIType, ToasterFrame> uis = new HashMap<>();
+    private HashMap<UIType, UIFactory> creators = new HashMap<>();
     private static volatile UIManager INSTANCE = null;
     
     private ToasterFrame currentUI = null;
 
-    private UIManager() {}
+    private UIManager() {
+        creators.put(UIType.LOGIN, new LoginUIFactory());
+        creators.put(UIType.REGISTER, new RegisterUIFactory());
+    }
 
     static public UIManager getInstance() {
         if (INSTANCE == null) {
@@ -30,17 +34,15 @@ public class UIManager {
         return INSTANCE;
     }
 
-    public void registUI(UIType type, ToasterFrame ui) {
-        if (uis.get(type) != null) {
-            System.out.printf("ui [%s] is exist", type.name());
-            return;
+    synchronized public ToasterFrame getUI(UIType type) {
+        ToasterFrame ui = uis.get(type);
+        if (ui != null) {
+            return ui;
         }
-
+        UIFactory creator = creators.get(type);
+        ui = creator.Create();
         uis.put(type, ui);
-    }
-
-    public ToasterFrame getUI(UIType type) {
-        return uis.get(type);
+        return ui;
     }
 
     public ToasterFrame getCurrentUI() {
@@ -50,6 +52,20 @@ public class UIManager {
     public void setCurrentUI(ToasterFrame ui) {
         currentUI = ui;
     }
-    
+
+    private class LoginUIFactory implements UIFactory {
+        @Override
+        public ToasterFrame Create() {
+            return new LoginUI();
+        }
+    }
+
+    private class RegisterUIFactory implements UIFactory {
+        @Override
+        public ToasterFrame Create() {
+            return new RegisterUI();
+        }
+    }
 
 }
+
