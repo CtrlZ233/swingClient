@@ -147,10 +147,11 @@ public class RegisterUI extends ToasterFrame {
             return;
         }
         Service service = Service.getInstance();
-        if (service == null) {
+        if (service == null || service.getPid() <= 0) {
             toaster.error("网络错误");
             return;
         }
+
         MsgBuilder builder = new MsgBuilder(MsgType.REGISTER, service.getPid());
         service.send(builder.msgPackage(ByteTransform.fillZero(username.getBytes(), UIUtils.USERNAME_MAX_LEN + 1), 
                                                       ByteTransform.fillZero(passWd.getBytes(), UIUtils.PASSWORD_MAX_LEN + 1)));

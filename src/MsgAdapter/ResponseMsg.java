@@ -13,12 +13,14 @@ public class ResponseMsg {
     
     public ResponseMsg(byte[] msg) {
         if (msg.length < ResponseCodePos.POS_BOTTOM.ordinal()) {
+            System.out.println("invalid msg");
             this.code = ResponseCode.SERVER_ERR;
             return;
         }
         boolean isMsgTypeValid = msg[ResponseCodePos.TYPE.ordinal()] < MsgType.MSGTYPE_BOTTOM.ordinal();
         boolean isRspCodeValid = msg[ResponseCodePos.CODE.ordinal()] < ResponseCode.ResponseCode_BOTTOM.ordinal();
-        if (!isMsgTypeValid || isRspCodeValid) {
+        if (!isMsgTypeValid || !isRspCodeValid) {
+            System.out.println("invalid msg 2");
             this.code = ResponseCode.SERVER_ERR;
             this.type = MsgType.MSGTYPE_BOTTOM;
             return;

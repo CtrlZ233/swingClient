@@ -24,14 +24,11 @@ public class MsgBuilder {
         msg[0] = (byte)this.type.ordinal();
 
         System.arraycopy(bytesPid, 0, msg, 1, bytesPid.length);
-        System.out.println(bytesPid.length);
         int index = 1 + bytesPid.length;
         for (int i = 0; i < datas.length; ++i) {
             System.arraycopy(datas[i], 0, msg, index, datas[i].length);
             index = index + datas[i].length;
         }
-        System.out.println(msg.length);
-        System.out.println(index);
         msg[index] = '\0';
         return msg;
     }

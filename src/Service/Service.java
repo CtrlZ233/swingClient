@@ -4,6 +4,7 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
+import java.sql.Connection;
 import java.util.ArrayDeque;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -14,6 +15,7 @@ import MsgAdapter.MsgDefine.*;
 import MsgHandler.LoginRspHandler;
 import MsgHandler.MsgHandler;
 import MsgHandler.RegisterRspHandler;
+import MsgHandler.ConnectRspMsgHandler;
 
 public class Service {
     private static int MaxWaitMsgNum = 32;
@@ -29,6 +31,7 @@ public class Service {
         this.sock = new Socket(host, port);
         handlers.put(MsgType.REGISTER, new RegisterRspHandler());
         handlers.put(MsgType.LOGIN, new LoginRspHandler());
+        handlers.put(MsgType.CONNECTION, new ConnectRspMsgHandler());
     }
 
     public static Service getInstance() {
@@ -51,8 +54,13 @@ public class Service {
         return pid;
     }
 
+    public void setPid(int newPid) {
+        pid = newPid;
+    }
+
     synchronized public void send(byte[] data) {
         try {
+            System.out.println(data.length);
             DataOutputStream out = new DataOutputStream(this.sock.getOutputStream());
             out.write(data, 0, data.length);
         } catch (Exception e) {
@@ -82,6 +90,9 @@ public class Service {
                 continue;
             }
             ResponseMsg msg = new ResponseMsg(msgByte);
+            for (int i = 0; i < msgByte.length; ++i) {
+                System.out.println((int)msgByte[i]);
+            }
             MsgHandler handlers = this.handlers.get(msg.type);
             if (handlers == null) {
                 System.out.printf("cannot handle this message, message type: %s\n", msg.type.name());
