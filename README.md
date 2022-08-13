@@ -2,7 +2,7 @@
 
 ## 描述
 
-我基于![LoginGUI](https://github.com/ProductOfAmerica/LoginGUI)创建了一个简单的swing Client, 用于测试我的 ![简单服务端](https://github.com/CtrlZ233/MyServer).
+我基于[LoginGUI](https://github.com/ProductOfAmerica/LoginGUI)创建了一个简单的swing Client, 用于测试我的 [简单服务端](https://github.com/CtrlZ233/MyServer).
 
 ## Examples:
 **Screenshot:**
