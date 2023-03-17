@@ -90,9 +90,6 @@ public class Service {
                 continue;
             }
             ResponseMsg msg = new ResponseMsg(msgByte);
-            for (int i = 0; i < msgByte.length; ++i) {
-                System.out.println((int)msgByte[i]);
-            }
             MsgHandler handlers = this.handlers.get(msg.type);
             if (handlers == null) {
                 System.out.printf("cannot handle this message, message type: %s\n", msg.type.name());
@@ -108,6 +105,7 @@ public class Service {
             int len = 0;
             try {
                 DataInputStream in = new DataInputStream(this.sock.getInputStream());
+                System.out.println("ready to read");
                 len = in.read(accept);
             } catch (IOException e) {
                 System.exit(-1);

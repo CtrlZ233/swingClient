@@ -3,6 +3,7 @@ package MsgAdapter;
 public class MsgDefine {
     public enum MsgType {
         CONNECTION,
+        DISCONNECTION,
         REGISTER,
         LOGIN,
         MSGTYPE_BOTTOM,

@@ -13,7 +13,7 @@ public class RegisterRspHandler implements MsgHandler {
         RegisterRspMsg rspMsg = new RegisterRspMsg(msg);
         Toaster toaster = UIManager.getInstance().getUI(UIType.REGISTER).getToaster();
         if (rspMsg.code != ResponseCode.OK) {
-            toaster.error(rspMsg.info);
+            toaster.error("注册失败，用户名已存在");
         } else {
             toaster.info("注册成功，请重新登录");
             getUIContext(UIType.REGISTER).setVisible(false);
